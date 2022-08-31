@@ -38,7 +38,9 @@ function concaty(abbrevationKeys,abbreviations){
       async ({ message, say }) => {
         const mess = message.text;
         let abbrevationKeys = Object.keys(abbreviations).filter(key => mess.includes(key));
-        say(`The above message contains abbrevation, the meaning of this abbrevation are: ${concaty(abbrevationKeys,abbreviations)}`);
+        if(abbrevationKeys.length !== 0){
+          say(`The above message contains abbrevation, the meaning of this abbrevation are: ${concaty(abbrevationKeys,abbreviations)}`);
+        }
       }
     );
 
