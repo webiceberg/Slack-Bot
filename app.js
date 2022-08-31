@@ -8,9 +8,6 @@ const app = new App({
   appToken: process.env.APP_TOKEN
 });
 
-
-
-
 let abbreviations ={
   "CT" : "Commerce Tools",
   "COCO" : "Composable Commerce",
@@ -20,71 +17,34 @@ let abbreviations ={
   "MC" : "Merchant Center"
 };
 
-const text = " I like Italy MCSRECOCOTurkey CT";
-
-let countriesInText = Object.keys(abbreviations).filter(key => text.includes(key));
-
-console.log("The above message contains abbrevations, the meaning of this abbrevations are")
-for(let i = 0; i < countriesInText.length; i++){
-  console.log(i+1 + ". " + countriesInText[i] + " :- " + abbreviations[countriesInText[i]])
+function concaty(abbrevationKeys,abbreviations){
+  let countDown = "";
+  for(let i=0; i<abbrevationKeys.length; i++){
+    countDown += `\n${i+1}.- ${abbrevationKeys[i]} - ${abbreviations[abbrevationKeys[i]]}`;
+  };
+  return countDown;
 }
 
-app.message(/CT/, async ({ command, say }) => {
-    try {
-      say("The above message contains abbrevation, the meaning of this abbrevation is: Commerce Tools");
-    } catch (error) {
-        console.log("err")
-      console.error(error);
-    }
-});
+(async () =>  {
 
-app.message(/FLD/, async ({ command, say }) => {
-    try {
-      say("The above message contains abbrevation, the meaning of this abbrevation is: Frontline Developer");
-    } catch (error) {
-        console.log("err")
-      console.error(error);
-    }
-});
+  try {
 
-app.message(/COCO/, async ({ command, say }) => {
-    try {
-      say("The above message contains abbrevation, the meaning of this abbrevation is: Composable Commerce");
-    } catch (error) {
-        console.log("err")
-      console.error(error);
-    }
-});
+    const port = 3000
+    await app.start(process.env.PORT || port);
 
-app.message(/SRE/, async ({ command, say }) => {
-    try {
-      say("The above message contains abbrevation, the meaning of this abbrevation is: Site Reliability Engineer");
-    } catch (error) {
-        console.log("err")
-      console.error(error);
-    }
-});
+    app.event(
+      { type: 'message', channel: process.env.CHANNEL_ID, text: /^(SRE|COCO|CT|FLD|P&O|MC).*/ },
+      // middleware,
+      async ({ message, say }) => {
+        const mess = message.text;
+        let abbrevationKeys = Object.keys(abbreviations).filter(key => mess.includes(key));
+        say(`The above message contains abbrevation, the meaning of this abbrevation are: ${concaty(abbrevationKeys,abbreviations)}`);
+      }
+    );
 
-app.message(/P&O/, async ({ command, say }) => {
-    try {
-      say("The above message contains abbrevation, the meaning of this abbrevation is: People and Operations");
-    } catch (error) {
-        console.log("err")
-      console.error(error);
-    }
-});
+  } catch(error) {
+    console.error(error);
+    process.exit();
+  }
 
-app.message(/MC/, async ({ command, say }) => {
-    try {
-      say("The above message contains abbrevation, the meaning of this abbrevation is: Merchant Center");
-    } catch (error) {
-        console.log("err")
-      console.error(error);
-    }
-});
-
-(async () => {
-  const port = 3000
-  await app.start(process.env.PORT || port);
-  console.log(`⚡️ Slack Bolt app is running on port ${port}!`);
 })();
