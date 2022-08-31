@@ -13,7 +13,7 @@ let abbreviations ={
   "COCO" : "Composable Commerce",
   "FLD" :	"Frontline Developer",
   "SRE" :	"Site Reliability Engineer",
-  "P&O" :	"People and Operations",
+   'P&O' :	"People and Operations",
   "MC" : "Merchant Center"
 };
 
