@@ -8,6 +8,27 @@ const app = new App({
   appToken: process.env.APP_TOKEN
 });
 
+
+
+
+let abbreviations ={
+  "CT" : "Commerce Tools",
+  "COCO" : "Composable Commerce",
+  "FLD" :	"Frontline Developer",
+  "SRE" :	"Site Reliability Engineer",
+  "P&O" :	"People and Operations",
+  "MC" : "Merchant Center"
+};
+
+const text = " I like Italy MCSRECOCOTurkey CT";
+
+let countriesInText = Object.keys(abbreviations).filter(key => text.includes(key));
+
+console.log("The above message contains abbrevations, the meaning of this abbrevations are")
+for(let i = 0; i < countriesInText.length; i++){
+  console.log(i+1 + ". " + countriesInText[i] + " :- " + abbreviations[countriesInText[i]])
+}
+
 app.message(/CT/, async ({ command, say }) => {
     try {
       say("The above message contains abbrevation, the meaning of this abbrevation is: Commerce Tools");
